@@ -1,7 +1,6 @@
 package ws
 
 import (
-	//	"bytes"
 	"fmt"
 	"log"
 	"net"
@@ -74,10 +73,6 @@ func (c *Session) read() {
 
 	c.conn.SetReadLimit(maxMessageSize)
 
-	// 默认关闭pong检测，如要开启上层逻辑调用ResetWaitTime()
-	// c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	// c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
-
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
@@ -86,19 +81,11 @@ func (c *Session) read() {
 			}
 			break
 		}
-		//	message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 		onMessage(c, message)
 	}
 }
 
 func (c *Session) write() {
-	//ticker := time.NewTicker(pingPeriod)
-	/*
-			defer func() {
-			ticker.Stop()
-			c.conn.Close()
-		}()
-	*/
 	for {
 		select {
 		case message, ok := <-c.send:
