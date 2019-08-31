@@ -8,7 +8,7 @@ type Hub struct {
 }
 
 func newHub() *Hub {
-	return &Hub{
+	return &Hub {
 		register: make(chan *Session),
 		unregister: make(chan *Session),
 		sessions: make(map[int64] *Session),

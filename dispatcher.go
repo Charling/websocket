@@ -1,13 +1,12 @@
 package ws
 
 import (
-//	LOGGER "base/logger"
 	"log"
-	"github.yn.com/ext/common/proto"
+	Proto "github.yn.com/ext/common/proto"
 	"github.com/golang/protobuf/proto"
 )
 
-type Handler func(s *Session, msg *VK_Proto.Message) 
+type Handler func(s *Session, msg *Proto.Message) 
 type Interface func(s *Session)
 
 const (
@@ -36,8 +35,7 @@ func onClose(s *Session) {
 }
 
 func onMessage(s *Session, data []byte) {
-	//log.Printf("==== OnReq ...")
-	msg := &VK_Proto.Message{}
+	msg := &Proto.Message { }
 	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		log.Println(err)
@@ -45,7 +43,6 @@ func onMessage(s *Session, data []byte) {
 	}
 
 	h, exists := mapHandlers[*msg.Ops]
-	//log.Printf("message: %d", GameProto.GameMessage(*msg.Ops))
 	if exists {
 		h(s, msg)
 	}
